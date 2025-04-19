@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 const SignUp = () => {
 
   const [formData, setFormData] = useState({})
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   const handleChange = (e) => {
@@ -25,14 +26,18 @@ const SignUp = () => {
     });
   
     const data = await res.text();
-    navigate('/sign-in')
+    if(res.status === 201) {
+      navigate('/sign-in') 
+    } else {
+      setError(data)
+    }
     console.log(data);
   };
   
   console.log(formData)
   return (
     <div className='p-3 max-w-lg mx-auto'>
-      <h1 className='text-3xl text-center font-semibold my-7'>Sing Up</h1>
+      <h1 className='text-3xl text-center font-semibold my-7'>Sign Up</h1>
       <form onSubmit={handleSubmit} className='flex flex-col gap-4'>
         <input type="text" placeholder='username' className='border p-3 rounded-lg' id='username' onChange={handleChange} />
         <input type="email" placeholder='email' className='border p-3 rounded-lg' id='email' onChange={handleChange} />
@@ -45,6 +50,7 @@ const SignUp = () => {
           <span className='text-blue-700'>Sing in</span>
         </Link>
       </div>
+      {error && <p className='text-red-500 mt-5'>{ error }</p>}
     </div>
   )
 }
