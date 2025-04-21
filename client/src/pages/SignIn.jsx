@@ -28,7 +28,13 @@ const SignIn = () => {
     });
   
     const data = await res.text();
+    console.log(data)
     if(res.status === 200) {
+      localStorage.setItem('isLoggedIn', 'true')
+      localStorage.setItem('profileUrl', data)
+      setTimeout(() =>{
+        localStorage.setItem('isLoggedIn', 'false')
+      }, 60 * 60 * 1000)
       navigate('/')
     } else {
       setError(data)
